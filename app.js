@@ -11,10 +11,11 @@ app.use(express.json());
 
 // Connection to MongoDB
 try {
-  mongoose.connect("mongodb://localhost: /kathford", {
+  mongoose.connect("mongodb://localhost:/kathford", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+
 } catch (err) {
   console.log(err);
 }

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type" : "module",
-    "scripts": {
+  "type": "module",
+  "scripts": {
     "start": "nodemon app.js"
   },
   "keywords": [],
@@ -13,6 +13,7 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "joy": "^0.1.1",
     "mongoose": "^5.13.0",
     "nodemon": "^2.0.9"
   }

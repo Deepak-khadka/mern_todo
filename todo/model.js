@@ -4,8 +4,8 @@ const todoSchema  = new mongoose.Schema({
    title : String ,
    description : String,
    status : Number,
-})
+});
  
-const Todo = mongoose.model('TODO', todoSchema)
+const todo = mongoose.model('Todo', todoSchema)
 
-export default Todo;
+export default todo;
