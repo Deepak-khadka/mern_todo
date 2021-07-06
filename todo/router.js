@@ -1,26 +1,46 @@
 import express from "express";
 import Todo from "./model.js";
+import {userSchema} from "./validation.js";
 
 const router = express.Router();
 
-/* Display all the list of todos */
-router.get("/", async (req, res) => {
-  const todo = await Todo.find();
-  res.send(todo)
+router.get("/", async (request, response) => {
+    const todo = await Todo.find();
+    response.send(todo)
 });
 
-/* Create todos list*/
-router.post("/create", async (req, res) => {
-  const data = req.body;
-  const todo = Todo(data);
-  todo.save();
-  res.send(`${data.title} Created Successfully`);
+router.post("/create", async (request, response) => {
+    const data = request.body
+
+    const {error} = userSchema.validate(data)
+    if (error) return response.status(404).send(error.message);
+
+    const todo = new Todo(data)
+    await todo.save()
+
+    response.send(`${data.title} Created Successfully`);
 });
 
-router.patch("/delete",  async (req, res) => {
- const todoId = req.body.id;
- Todo.remove({"_id" : ObjectId("4d5192665777000000005490")});
-  res.send(`Success to remove ID : ${todoId}`)
+router.get('/show/:id', async (request, response) => {
+    const id = request.params.id
+    const todoData = await Todo.findById({_id: id})
+    response.send(todoData)
+})
+
+router.put('/update/:id', async (request, response) => {
+    const id = request.params.id
+
+    const { error } = userSchema.validate(request.body)
+    if (error) return response.send(error)
+
+    const todoData = await Todo.findOneAndUpdate({_id: id}, {$set: request.body}, {new: true})
+    response.send(`Update Success ${todoData}`)
+})
+
+router.patch("/delete/:id", async (request, response) => {
+    const todoId = request.params.id;
+    const removedTodo = await Todo.findByIdAndRemove({_id: todoId})
+    response.send(`Success to remove ID : ${removedTodo.title}`)
 });
 
 export default router;
